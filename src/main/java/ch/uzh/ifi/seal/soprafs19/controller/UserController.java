@@ -46,11 +46,16 @@ public class   UserController {
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    User createUser(@RequestBody User newUser) {
+    Resource<User> createUser(@RequestBody User newUser) {
         if (this.service.hasUsername(newUser.getUsername())) {
             throw new UsernameAlreadyExistsException();
         }
-        return this.service.createUser(newUser);
+
+        User user = this.service.createUser(newUser);
+
+        return new Resource<>(user,
+                linkTo(methodOn(UserController.class).one(user.getId())).withSelfRel(),
+                linkTo(methodOn(UserController.class).all()).withRel("users"));
     }
 
     // Single item

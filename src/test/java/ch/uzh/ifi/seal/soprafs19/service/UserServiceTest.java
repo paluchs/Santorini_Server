@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs19.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs19.entity.User;
 import ch.uzh.ifi.seal.soprafs19.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs19.service.UserService;
+import net.bytebuddy.build.Plugin;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import java.util.Optional;
 
 /**
  * Test class for the UserResource REST resource.
@@ -34,16 +37,18 @@ public class UserServiceTest {
 
     @Test
     public void createUser() {
-        Assert.assertNull(userRepository.findByUsername("testUsername"));
+        System.out.println(userRepository.findByUsername("testUsername"));
+        Assert.assertEquals(Optional.empty(), userRepository.findByUsername("testUsername"));
 
         User testUser = new User();
         testUser.setName("testName");
         testUser.setUsername("testUsername");
+        testUser.setPassword("testPassword");
 
         User createdUser = userService.createUser(testUser);
 
         Assert.assertNotNull(createdUser.getToken());
         Assert.assertEquals(createdUser.getStatus(),UserStatus.ONLINE);
-        Assert.assertEquals(createdUser, userRepository.findByToken(createdUser.getToken()));
+        Assert.assertEquals(createdUser, userRepository.findByToken(createdUser.getToken()).get());
     }
 }

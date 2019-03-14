@@ -4,6 +4,6 @@ import org.springframework.http.ResponseEntity;
 
 public class NotAllowedToEditException extends RuntimeException {
 
-    public NotAllowedToEditException() { super("This username is already taken!"); }
+    public NotAllowedToEditException() { super("You can only edit your own profile"); }
 
 }

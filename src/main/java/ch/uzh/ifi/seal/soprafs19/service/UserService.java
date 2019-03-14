@@ -42,6 +42,11 @@ public class UserService {
 
     public boolean hasUsername(String username) {return this.userRepository.existsByUsername(username);}
 
+    void deleteByUsername(String username) {
+        userRepository.deleteUserByUsername(username);
+        log.debug("Deleted user: {}", username);
+    }
+
     public User createUser(User newUser) {
         newUser.setToken(UUID.randomUUID().toString());
         newUser.setStatus(UserStatus.ONLINE);
