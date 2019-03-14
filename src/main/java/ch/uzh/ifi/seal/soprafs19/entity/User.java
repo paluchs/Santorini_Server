@@ -1,6 +1,8 @@
 package ch.uzh.ifi.seal.soprafs19.entity;
 
 import ch.uzh.ifi.seal.soprafs19.constant.UserStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.tomcat.jni.Local;
 
 import java.io.Serializable;
 
@@ -8,28 +10,39 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class User implements Serializable {
-	
+
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
 	private Long id;
-	
-	@Column(nullable = false) 
+
+	@Column
 	private String name;
-	
-	@Column(nullable = false, unique = true) 
+
+	@Column(nullable = false, unique = true)
 	private String username;
-	
-	@Column(nullable = false, unique = true) 
+
+	@Column(nullable = false)
+	private String password;
+
+	@Column(nullable = false, unique = true)
 	private String token;
 
 	@Column(nullable = false)
 	private UserStatus status;
+
+	@Column
+	private LocalDateTime creationDate;
+
+	@Column
+	private LocalDate birthdayDate;
 
 	public Long getId() {
 		return id;
@@ -55,6 +68,15 @@ public class User implements Serializable {
 		this.username = username;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String getToken() {
 		return token;
 	}
@@ -69,6 +91,22 @@ public class User implements Serializable {
 
 	public void setStatus(UserStatus status) {
 		this.status = status;
+	}
+
+	public LocalDateTime getCreationDate() {
+		return creationDate;
+	}
+
+	public final void setCreationDate(LocalDateTime creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public LocalDate getBirthdayDate() {
+		return birthdayDate;
+	}
+
+	public void setBirthdayDate(LocalDate birthdayDate) {
+		this.birthdayDate = birthdayDate;
 	}
 
 	@Override
